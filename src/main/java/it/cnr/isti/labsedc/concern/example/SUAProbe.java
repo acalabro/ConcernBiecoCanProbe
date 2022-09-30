@@ -32,20 +32,19 @@ public class SUAProbe extends ConcernAbstractProbe {
 
 			sendConnectionEventMessage(aGenericProbe);
 			
+			Thread.sleep(5000);
+			sendDisconnectionEventMessage(aGenericProbe);
+			Thread.sleep(1000);
+			sendConnectionEventMessage(aGenericProbe);
+			Thread.sleep(5000);
+			sendDisconnectionEventMessage(aGenericProbe);
+			Thread.sleep(1000);
+			sendConnectionEventMessage(aGenericProbe);
+			Thread.sleep(1000);
+			sendConnectionEventMessage(aGenericProbe);
+			Thread.sleep(100);
+			sendConnectionEventMessage(aGenericProbe);
 			
-//			Thread.sleep(5000);
-//			sendDisconnectionEventMessage(aGenericProbe);
-//			Thread.sleep(1000);
-//			sendConnectionEventMessage(aGenericProbe);
-//			Thread.sleep(5000);
-//			sendDisconnectionEventMessage(aGenericProbe);
-//			Thread.sleep(1000);
-//			sendConnectionEventMessage(aGenericProbe);
-//			Thread.sleep(1000);
-//			sendConnectionEventMessage(aGenericProbe);
-//		  Thread.sleep(100);
-//			sendConnectionEventMessage(aGenericProbe);
-//			
 			
 			sendVelocityMessage(aGenericProbe, "0.1");
 			Thread.sleep(100);
@@ -54,32 +53,9 @@ public class SUAProbe extends ConcernAbstractProbe {
 			sendScoreMessage(aGenericProbe, "0.1f");
 			Thread.sleep(100);
 			sendVelocityMessage(aGenericProbe, "0.1");
-
-//			
-//			  Thread.sleep(100);
-//				sendConnectionEventMessage(aGenericProbe);
-//				
-//				
-				sendVelocityMessage(aGenericProbe, "0.1");
-				Thread.sleep(300);
-				sendVelocityMessage(aGenericProbe, "0.1");
-				Thread.sleep(300);
-				sendScoreMessage(aGenericProbe, "0.1f");
-				Thread.sleep(300);
-				sendVelocityMessage(aGenericProbe, "0.1");
-				
-//				  Thread.sleep(300);
-//					sendConnectionEventMessage(aGenericProbe);
-//					
-					
-					sendVelocityMessage(aGenericProbe, "0.1");
-					Thread.sleep(1000);
-					sendVelocityMessage(aGenericProbe, "0.1");
-					Thread.sleep(300);
-					sendScoreMessage(aGenericProbe, "0.1f");
-					Thread.sleep(500);
-					sendVelocityMessage(aGenericProbe, "0.1");
 			
+			
+						
 		} catch (IndexOutOfBoundsException | NamingException e) {} catch (JMSException e) {
 			e.printStackTrace();
 		} 
