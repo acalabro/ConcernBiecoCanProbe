@@ -27,7 +27,7 @@ public class DTProbe extends ConcernAbstractProbe {
 				ConnectionManager.createProbeSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
 						"tcp://localhost:61616","system", "manager",
-						"TopicCF","DROOLS-InstanceOne", false, "DT_probe",	
+						"TopicCF","DROOLS-InstanceOne", false, "DigitalTwin",	
 						"it.cnr.isti.labsedc.concern,java.lang,javax.security,java.util",
 						"vera", "griselda"));
 		//sending events
@@ -49,7 +49,7 @@ public class DTProbe extends ConcernAbstractProbe {
 		try
 		{
 			ConcernDTForecast<String> forecast = new ConcernDTForecast<String>(System.currentTimeMillis(),
-					"DT_probe","Monitoring","noSession","noChecksum","DTForecasting", forecastedEvents,	
+					"DigitalTwin","Monitoring","noSession","noChecksum","DTForecasting", forecastedEvents,	
 					CepType.DROOLS, false, confidenceIntervalInSeconds, "DT_probe");
 			ObjectMessage messageToSend = publishSession.createObjectMessage();
 			messageToSend.setJMSMessageID(String.valueOf(MESSAGEID++));

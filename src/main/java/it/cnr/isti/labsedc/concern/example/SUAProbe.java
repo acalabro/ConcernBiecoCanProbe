@@ -21,7 +21,7 @@ public class SUAProbe extends ConcernAbstractProbe {
 		SUAProbe aGenericProbe = new SUAProbe(
 				ConnectionManager.createProbeSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-						"tcp://localhost:61616","system", "manager",
+						"tcp://146.48.81.167:61616","system", "manager",
 						"TopicCF","DROOLS-InstanceOne", false, "SUA_probe",	
 						"it.cnr.isti.labsedc.concern,java.lang,javax.security,java.util",
 						"vera", "griselda"));

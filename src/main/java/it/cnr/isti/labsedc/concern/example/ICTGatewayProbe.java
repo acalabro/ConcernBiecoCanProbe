@@ -17,13 +17,13 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 	public ICTGatewayProbe(Properties settings) {
 		super(settings);
 	}
-
+	
 	public static void main(String[] args) throws UnknownHostException, InterruptedException {
 		//creating a probe
 		ICTGatewayProbe aGenericProbe = new ICTGatewayProbe(
 				ConnectionManager.createProbeSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-						"tcp://localhost:61616","system", "manager",
+						"tcp://127.0.0.1:61616","system", "manager",
 						"TopicCF","DROOLS-InstanceOne", false, "SUA_probe",	
 						"it.cnr.isti.labsedc.concern,java.lang,javax.security,java.util",
 						"vera", "griselda"));
@@ -31,36 +31,39 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 		try {
 			DebugMessages.line();
 			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"Sending ICTGateway messages");
-
-						
+			
 			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
 					System.currentTimeMillis(),
-					"ICTGW_Probe",
-					"Monitoring",
-					"sessionID",
-					"noChecksum",
-					"#ANameForTheMessage",
-					"ICTMessagePayload",
-					CepType.DROOLS, 
-					false, 
-					"ICTMessageType", 
-					"ICTMessageCategory")
+					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
+					"AUTHENTICATION_REQUEST", "ICTMessagePayload0", CepType.DROOLS, false, 
+					"AUTHENTICATION_REQUEST", "AUTHENTICATION")
+			);
+		
+			Thread.sleep(1000);
+					
+			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
+					System.currentTimeMillis(),
+					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
+					"REGISTRATION_RESPONSE", "ICTMessagePayload1", CepType.DROOLS, false, 
+					"REGISTRATION_RESPONSE", "REGISTRATION")
 			);
 			
 			Thread.sleep(1000);
 			
 			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
 					System.currentTimeMillis(),
-					"ICTGW_Probe",
-					"Monitoring",
-					"sessionID",
-					"noChecksum",
-					"#ANameForTheMessage1",
-					"ICTMessagePayload1",
-					CepType.DROOLS, 
-					false, 
-					"ICTMessageType1", 
-					"ICTMessageCategory1")
+					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
+					"TOPOLOGY_ELEMENTS_RESPONSE", "ICTMessagePayload2", CepType.DROOLS, false, 
+					"TOPOLOGY_ELEMENTS_RESPONSE", "DATA")
+			);
+			
+			Thread.sleep(1000);
+			
+			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
+					System.currentTimeMillis(),
+					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
+					"TOPOLOGY_ELEMENT_DETAILS_RESPONSE", "ICTMessagePayload3", CepType.DROOLS, false, 
+					"TOPOLOGY_ELEMENT_DETAILS_RESPONSE", "DATA")
 			);
 						
 		} catch (IndexOutOfBoundsException | NamingException e) {} catch (JMSException e) {
@@ -89,15 +92,7 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 			e.printStackTrace();
 		}
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
+		
 	
 //	protected static void sendRegistrationICTMessage();
 //	protected static void sendDataICTMessage();
