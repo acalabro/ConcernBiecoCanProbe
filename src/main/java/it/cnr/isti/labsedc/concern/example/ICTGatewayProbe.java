@@ -24,7 +24,7 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 				ConnectionManager.createProbeSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
 						"tcp://127.0.0.1:61616","system", "manager",
-						"TopicCF","DROOLS-InstanceOne", false, "SUA_probe",	
+						"TopicCF","DROOLS-InstanceOne", false, "ICTGW_Probe",	
 						"it.cnr.isti.labsedc.concern,java.lang,javax.security,java.util",
 						"vera", "griselda"));
 		//sending events
@@ -39,15 +39,15 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 					"AUTHENTICATION_REQUEST", "AUTHENTICATION")
 			);
 		
-			Thread.sleep(1000);
-					
-			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
-					System.currentTimeMillis(),
-					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
-					"REGISTRATION_RESPONSE", "ICTMessagePayload1", CepType.DROOLS, false, 
-					"REGISTRATION_RESPONSE", "REGISTRATION")
-			);
-			
+//			Thread.sleep(1000);
+//					
+//			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
+//					System.currentTimeMillis(),
+//					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
+//					"REGISTRATION_RESPONSE", "ICTMessagePayload1", CepType.DROOLS, false, 
+//					"REGISTRATION_RESPONSE", "REGISTRATION")
+//			);
+//			
 			Thread.sleep(1000);
 			
 			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
