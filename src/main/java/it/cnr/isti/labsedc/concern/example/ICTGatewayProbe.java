@@ -23,7 +23,7 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 		ICTGatewayProbe aGenericProbe = new ICTGatewayProbe(
 				ConnectionManager.createProbeSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-						"tcp://127.0.0.1:61616","system", "manager",
+						args[0],"system", "manager",
 						"TopicCF","DROOLS-InstanceOne", false, "ICTGW_Probe",	
 						"it.cnr.isti.labsedc.concern,java.lang,javax.security,java.util",
 						"vera", "griselda"));
@@ -32,6 +32,8 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 			DebugMessages.line();
 			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"Sending ICTGateway messages");
 			
+			simMessage();
+			
 			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
 					System.currentTimeMillis(),
 					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
@@ -39,15 +41,15 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 					"AUTHENTICATION_REQUEST", "AUTHENTICATION")
 			);
 		
-//			Thread.sleep(1000);
-//					
-//			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
-//					System.currentTimeMillis(),
-//					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
-//					"REGISTRATION_RESPONSE", "ICTMessagePayload1", CepType.DROOLS, false, 
-//					"REGISTRATION_RESPONSE", "REGISTRATION")
-//			);
-//			
+			simMessage();
+					
+			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
+					System.currentTimeMillis(),
+					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
+					"REGISTRATION_RESPONSE", "ICTMessagePayload1", CepType.DROOLS, false, 
+					"REGISTRATION_RESPONSE", "REGISTRATION")
+			);
+			
 			Thread.sleep(1000);
 			
 			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
@@ -57,7 +59,8 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 					"TOPOLOGY_ELEMENTS_RESPONSE", "DATA")
 			);
 			
-			Thread.sleep(1000);
+			simMessage();
+			injectingFailure(aGenericProbe);
 			
 			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
 					System.currentTimeMillis(),
@@ -72,6 +75,58 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 	}
 	
 	
+	private static void injectingFailure(ICTGatewayProbe aGenericProbe) {
+
+		try {
+			DebugMessages.line();
+			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"INJECTING DEVIATION IN 3 SECONDS");
+			DebugMessages.line();
+			Thread.sleep(1000);
+			DebugMessages.line();
+			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"INJECTING DEVIATION IN 2 SECONDS");
+			DebugMessages.line();
+			Thread.sleep(1000);
+			DebugMessages.line();
+			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"INJECTING DEVIATION IN 1 SECONDS");
+			Thread.sleep(1000);
+			DebugMessages.line();
+			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"Injecting failure");
+			DebugMessages.line();
+
+			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
+					System.currentTimeMillis(),
+					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
+					"AUTHENTICATION_REQUEST", "ICTMessagePayload0", CepType.DROOLS, false, 
+					"AUTHENTICATION_REQUEST", "AUTHENTICATION")
+			);
+			
+			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
+					System.currentTimeMillis(),
+					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
+					"AUTHENTICATION_REQUEST", "ICTMessagePayload0", CepType.DROOLS, false, 
+					"AUTHENTICATION_REQUEST", "AUTHENTICATION")
+			);
+		} catch (JMSException | NamingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}		
+	}
+
+	private static void simMessage() throws InterruptedException {
+
+		for (int i = 0; i< 4; i++) {
+			Thread.sleep(1300);
+			DebugMessages.line();
+			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"A non relevant method is executed");
+			Thread.sleep(500);
+			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"Generic operations");			
+		}
+		
+	}
+
 	protected static void sendICTMessage(ICTGatewayProbe aGenericProbe, ConcernICTGatewayEvent<String> message) throws JMSException,NamingException {
 
 		DebugMessages.print(

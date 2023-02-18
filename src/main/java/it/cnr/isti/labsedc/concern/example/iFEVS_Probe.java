@@ -11,29 +11,29 @@ import it.cnr.isti.labsedc.concern.probe.ConcernAbstractProbe;
 import it.cnr.isti.labsedc.concern.utils.ConnectionManager;
 import it.cnr.isti.labsedc.concern.utils.DebugMessages;
 
-public class ErrorGenerationSimProbe extends ConcernAbstractProbe {
+public class iFEVS_Probe extends ConcernAbstractProbe {
 
-	public ErrorGenerationSimProbe(Properties settings) {
+	public iFEVS_Probe(Properties settings) {
 		super(settings);
 	}
 	
 	public static void main(String[] args) throws UnknownHostException, InterruptedException {
 		//creating a probe
-		ErrorGenerationSimProbe aGenericProbe = new ErrorGenerationSimProbe(
+		iFEVS_Probe aGenericProbe = new iFEVS_Probe(
 				ConnectionManager.createProbeSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-						"tcp://146.48.81.16761616","system", "manager",
-						"TopicCF","DROOLS-InstanceOne", false, "ErrorGenerationSimProbe",	
+						"tcp://146.48.81.167:61616","system", "manager",
+						"TopicCF","DROOLS-InstanceOne", false, "iFEVS_Probe",	
 						"it.cnr.isti.labsedc.concern,java.lang,javax.security,java.util",
 						"vera", "griselda"));
 		//sending events
 		try {
 			DebugMessages.line();
-			DebugMessages.println(System.currentTimeMillis(), ErrorGenerationSimProbe.class.getSimpleName(),"Sending ICTGateway messages");
+			DebugMessages.println(System.currentTimeMillis(), iFEVS_Probe.class.getSimpleName(),"Sending ICTGateway messages");
 			
-			ErrorGenerationSimProbe.sendErrorMessage(aGenericProbe, new ConcernBaseEvent<String>(
+			iFEVS_Probe.sendErrorMessage(aGenericProbe, new ConcernBaseEvent<String>(
 					System.currentTimeMillis(),
-					"ErrorGenerationSimProbe", "Monitoring", "sessionID", "noChecksum",
+					"iFevs-ErrorMessage", "Monitoring", "sessionID", "noChecksum",
 					"ERROR_NAME", "ERROR_PAYLOAD", CepType.DROOLS, false, "ERROR_CLASS")
 					);
 						
@@ -43,11 +43,11 @@ public class ErrorGenerationSimProbe extends ConcernAbstractProbe {
 	}
 	
 	
-	protected static void sendErrorMessage(ErrorGenerationSimProbe aGenericProbe, ConcernBaseEvent<String> message) throws JMSException,NamingException {
+	protected static void sendErrorMessage(iFEVS_Probe aGenericProbe, ConcernBaseEvent<String> message) throws JMSException,NamingException {
 
 		DebugMessages.print(
 				System.currentTimeMillis(), 
-				ErrorGenerationSimProbe.class.getSimpleName(),
+				iFEVS_Probe.class.getSimpleName(),
 				"Creating Message ");
 		try
 		{
@@ -55,7 +55,7 @@ public class ErrorGenerationSimProbe extends ConcernAbstractProbe {
 			messageToSend.setJMSMessageID(String.valueOf(MESSAGEID++));
 			messageToSend.setObject(message);
 			DebugMessages.ok();
-			DebugMessages.print(System.currentTimeMillis(), ErrorGenerationSimProbe.class.getSimpleName(),"Publishing message  ");
+			DebugMessages.print(System.currentTimeMillis(), iFEVS_Probe.class.getSimpleName(),"Publishing message  ");
 			mProducer.send(messageToSend);
 			DebugMessages.ok();
 			DebugMessages.line();
