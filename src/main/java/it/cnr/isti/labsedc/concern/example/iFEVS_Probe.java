@@ -1,6 +1,11 @@
 package it.cnr.isti.labsedc.concern.example;
 
+import java.io.IOException;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
@@ -19,31 +24,66 @@ public class iFEVS_Probe extends ConcernAbstractProbe {
 	
 	public static void main(String[] args) throws UnknownHostException, InterruptedException {
 		//creating a probe
+		if (args.length < 3) {
+			System.out.println("USAGE: java -jar iFevs_Probe.jar #monitoringBroker #pathToCPUValueFile #pathToConnectionsValueFile"
+					+ "\neg: java -jar iFevs_Probe.jar tcp://localhost:61616 /tmp/cpuvalue.tmp /tmp/connectionvalue.tmp");
+			System.exit(0);
+		}
 		iFEVS_Probe aGenericProbe = new iFEVS_Probe(
 				ConnectionManager.createProbeSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-						"tcp://146.48.81.167:61616","system", "manager",
+						args[0],"system", "manager",
 						"TopicCF","DROOLS-InstanceOne", false, "iFEVS_Probe",	
 						"it.cnr.isti.labsedc.concern,java.lang,javax.security,java.util",
 						"vera", "griselda"));
 		//sending events
-		try {
-			DebugMessages.line();
-			DebugMessages.println(System.currentTimeMillis(), iFEVS_Probe.class.getSimpleName(),"Sending ICTGateway messages");
-			
-			iFEVS_Probe.sendErrorMessage(aGenericProbe, new ConcernBaseEvent<String>(
-					System.currentTimeMillis(),
-					"iFevs-ErrorMessage", "Monitoring", "sessionID", "noChecksum",
-					"ERROR_NAME", "ERROR_PAYLOAD", CepType.DROOLS, false, "ERROR_CLASS")
-					);
+		while (true) {
+			try {
+				DebugMessages.line();
+				DebugMessages.println(System.currentTimeMillis(), iFEVS_Probe.class.getSimpleName(),"Sending Primary Client messages");
+				
+				iFEVS_Probe.sendMessage(aGenericProbe, new ConcernBaseEvent<String>(
+						System.currentTimeMillis(),
+						"iFevs-PrimaryClient", "Monitoring", "sessionID", "noChecksum",
+						"CPU", readCPUValue(args[1]), CepType.DROOLS, false, "CPU_Value")
+						);
 						
-		} catch (IndexOutOfBoundsException | NamingException e) {} catch (JMSException e) {
-			e.printStackTrace();
-		} 
+				iFEVS_Probe.sendMessage(aGenericProbe, new ConcernBaseEvent<String>(
+						System.currentTimeMillis(),
+						"iFevs-PrimaryClient", "Monitoring", "sessionID", "noChecksum",
+						"CONNECTIONS", readConnections(args[2]), CepType.DROOLS, false, "Connections_Value")
+						);
+				Thread.sleep(5000);
+	
+			} catch (IndexOutOfBoundsException | NamingException e) {} catch (JMSException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
+	private static String readCPUValue(String cpuValuePath) {
+
+		return readFromFile(cpuValuePath);
+	}
 	
-	protected static void sendErrorMessage(iFEVS_Probe aGenericProbe, ConcernBaseEvent<String> message) throws JMSException,NamingException {
+	private static String readConnections(String connectionValuePath) {
+		return readFromFile(connectionValuePath);
+	}
+	
+	private static String readFromFile(String filePath) {
+		String text="";
+		
+		try {
+		Path fileName = Paths.get(filePath);
+
+	    text = Files.readString(fileName, StandardCharsets.ISO_8859_1);
+	    		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	    return text.trim();
+	}
+
+	protected static void sendMessage(iFEVS_Probe aGenericProbe, ConcernBaseEvent<String> message) throws JMSException,NamingException {
 
 		DebugMessages.print(
 				System.currentTimeMillis(), 

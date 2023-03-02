@@ -21,12 +21,13 @@ public class DTProbe extends ConcernAbstractProbe {
 	}
 	
 	public static void main(String[] args) throws UnknownHostException, InterruptedException {
+		while (true) {
 		Thread.sleep(1000);
 		//creating a probe
 		DTProbe aGenericProbe = new DTProbe(
 				ConnectionManager.createProbeSettingsPropertiesObject(
 						"org.apache.activemq.jndi.ActiveMQInitialContextFactory",
-						"tcp://localhost:61616","system", "manager",
+						"tcp://10.0.0.228:61616","system", "manager",
 						"TopicCF","DROOLS-InstanceOne", false, "DigitalTwin",	
 						"it.cnr.isti.labsedc.concern,java.lang,javax.security,java.util",
 						"vera", "griselda"));
@@ -40,6 +41,7 @@ public class DTProbe extends ConcernAbstractProbe {
 		} catch (IndexOutOfBoundsException | NamingException e) {} catch (JMSException e) {
 			e.printStackTrace();
 		} 
+	}
 	}
 
 	protected static void sendDTForecastEvents(DTProbe aGenericProbe, String forecastedEvents, String confidenceIntervalInSeconds) throws JMSException,NamingException {

@@ -19,6 +19,8 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 	}
 	
 	public static void main(String[] args) throws UnknownHostException, InterruptedException {
+		while (true) {
+		
 		//creating a probe
 		ICTGatewayProbe aGenericProbe = new ICTGatewayProbe(
 				ConnectionManager.createProbeSettingsPropertiesObject(
@@ -31,9 +33,7 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 		try {
 			DebugMessages.line();
 			DebugMessages.println(System.currentTimeMillis(), ICTGatewayProbe.class.getSimpleName(),"Sending ICTGateway messages");
-			
-			simMessage();
-			
+						
 			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
 					System.currentTimeMillis(),
 					"ICTGW_Probe", "Monitoring", "sessionID", "noChecksum",
@@ -41,7 +41,6 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 					"AUTHENTICATION_REQUEST", "AUTHENTICATION")
 			);
 		
-			simMessage();
 					
 			ICTGatewayProbe.sendICTMessage(aGenericProbe, new ConcernICTGatewayEvent<String>(
 					System.currentTimeMillis(),
@@ -72,6 +71,7 @@ public class ICTGatewayProbe extends ConcernAbstractProbe {
 		} catch (IndexOutOfBoundsException | NamingException e) {} catch (JMSException e) {
 			e.printStackTrace();
 		} 
+		}
 	}
 	
 	
