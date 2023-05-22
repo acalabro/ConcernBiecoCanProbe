@@ -3,42 +3,26 @@
   <groupId>ConcernProbe</groupId>
   <artifactId>ConcernProbe</artifactId>
   <version>0.0.4-SNAPSHOT</version>
+  <packaging>jar</packaging>
+
   <name>ConcernProbe</name>
   <description>A probe for sending events to the Concern Monitoring Platform.</description>
   <organization>
   	<name>LABSEDC - ISTI CNR</name>
   	<url>http://labsedc.isti.cnr.it</url>
   </organization>
-  <build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.8.1</version>
-				<inherited>true</inherited>
-				<configuration>
-					<source>1.7</source>
-					<target>1.7</target>
-				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>exec-maven-plugin</artifactId>
-				<version>1.2.1</version>
-				<executions>
-					<execution>
-						<goals>
-							<goal>java</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<mainClass>it.cnr.isti.labsedc.concern.example.ConcernProbe</mainClass>
-				</configuration>
-			</plugin>
-		</plugins>
-	</build>
-	
+
+  <licenses>
+    <license>
+      <name>GNU General Public License, Version 3.0</name>
+      <url>https://www.gnu.org/licenses/gpl-3.0.html</url>
+      <distribution>repo</distribution>
+    </license>
+  </licenses>
+ 
+  <scm>
+    <url>https://svn.apache.org/viewvc/maven</url>
+  </scm>
 	
   <dependencies>
 		<dependency>
@@ -63,4 +47,37 @@
 		</dependency>
     
   </dependencies>
+  <properties>
+     <maven.compiler.source>1.8</maven.compiler.source>
+     <maven.compiler.target>1.8</maven.compiler.target>
+</properties>
+<distributionManagement>
+ 
+        <repository>
+			<uniqueVersion>false</uniqueVersion>
+      <id>it.cnr.isti.labsedc</id>
+      <name>ConcernProbe</name>
+      <url>file:///home/acalabro/Desktop/test</url>
+      <layout>default</layout>
+        </repository>
+
+</distributionManagement>
+  <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
